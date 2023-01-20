@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { AnyArray } from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -62,7 +62,13 @@ const userSchema = new mongoose.Schema(
         return mongoose
           .model("User")
           .findOne({ _id: id })
-          .select("fname lname date email bloodPressureRecords");
+          .select("fname lname date email");
+      },
+      getBloodPressureRecords(userId) {
+        return mongoose
+          .model("User")
+          .findOne({ _id: userId })
+          .select("bloodPressureRecords");
       },
     },
   }

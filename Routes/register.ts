@@ -2,8 +2,10 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import User from "../Models/User";
 import joi from "@hapi/joi";
+import multer from "multer";
 
 const router = express.Router();
+const upload = multer();
 
 const registerSchema = joi.object({
   fname: joi.string().min(3).required(),
@@ -12,7 +14,7 @@ const registerSchema = joi.object({
   password: joi.string().min(6).required(),
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", upload.none(), async (req, res) => {
   //CHECKING IF USER EMAIL ALREADY EXISTS
   const emailExist = await User.findOne({ email: req.body.email });
   // IF EMAIL EXIST THEN RETURN
@@ -22,21 +24,19 @@ router.post("/register", async (req, res) => {
   }
 
   //HASHING THE PASSWORD
-
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-  //ON PROCESS OF ADDING NEW USER
-
-  const user = new User({
-    fname: req.body.fname,
-    lname: req.body.lname,
-    email: req.body.email,
-    password: hashedPassword,
-    bloodPressureRecords: [],
-  });
-
   try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+    //ON PROCESS OF ADDING NEW USER
+    const user = new User({
+      fname: req.body.fname,
+      lname: req.body.lname,
+      email: req.body.email,
+      password: hashedPassword,
+      bloodPressureRecords: [],
+    });
+
     //VALIDATION OF USER INPUTS
 
     const { error: newUserHasInvalidDetails } =
@@ -54,6 +54,7 @@ router.post("/register", async (req, res) => {
       res.status(200).send("user created");
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });

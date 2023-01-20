@@ -4,13 +4,14 @@ import { Request, Response } from "express";
 
 const router = require("express").Router();
 
-router.get(
-  "/getCurrentUser",
+router.post(
+  "/getBloodPressure",
   authenticate,
   async (req: Request, res: Response) => {
+    const id = req.header("id");
     try {
-      const results = await User.getCurrentUserButOmitPasswords(req.body.id);
-      res.send(results);
+      const results = await User.getBloodPressureRecords(id);
+      res.send(results[0] || results);
     } catch (error) {
       console.log(error);
       res.status(500).send(error);
