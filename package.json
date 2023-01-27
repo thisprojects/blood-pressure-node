@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon ./index.ts",
-    "test": "NODE_ENV=test jest --watch --runInBand --verbose"
+    "dev": "npx nodemon ./index.ts",
+    "test": "NODE_ENV=test jest --watch --runInBand --verbose",
+    "build": "tsc",
+    "start": "node tsBuild/index.js"
   },
   "keywords": [],
   "author": "",

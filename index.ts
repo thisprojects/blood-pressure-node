@@ -20,7 +20,7 @@ app.get("/", (req: Request, res: Response) => {
 
 //MIDDLEWARE
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "*" }));
 
 //ROUTES
 app.use("/api/post", register);
