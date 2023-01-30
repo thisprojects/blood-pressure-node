@@ -1,9 +1,3 @@
-<<<<<<< HEAD
 /node_modules
 .env
 /tsBuild
-=======
-node_modules/
-tsBuild/
-*.env
->>>>>>> d2b80a0 (update docker and gitignore)
